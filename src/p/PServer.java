@@ -10,17 +10,19 @@ public class PServer {
 
 	static int C_PORT=5050;
 	static int PROXY_PORT=5051;
+	static long TIMEOUT=500;
 	public static void main(String[] args) throws IOException {
 		ServerSocket cServer=new ServerSocket(C_PORT);
 		ServerSocket sServer=new ServerSocket(PROXY_PORT);
 		Socket cServerSocket = null;
+		long timeout=0;
 		try 
 		{
 			System.out.println("cServer waiting.."+cServer.getLocalPort());
 			cServerSocket = cServer.accept();
 			System.out.println("cServer connected");
 						
-				
+			
 			while(true)
 			{
 				
@@ -29,9 +31,11 @@ public class PServer {
 					System.out.println("sServer waiting.. on "+sServer.getLocalPort());
 					Socket sServerSocket = sServer.accept();
 					System.out.println("sServer connected");
+					
+					timeout=System.currentTimeMillis()+TIMEOUT;	
 					while (!sServerSocket.isClosed())
 					{
-						
+					
 						
 						if(sServerSocket.getInputStream().available()>0)
 						{
@@ -46,6 +50,13 @@ public class PServer {
 							//cClientSocket.getInputStream().transferTo(sClientSocket.getOutputStream());
 							StreamTools.copyStream(cServerSocket.getInputStream(),sServerSocket.getOutputStream());
 							//System.out.println(cServerSocket.getInputStream().available()+" done cServerSocket to sServerSocket");
+							sServerSocket.close();
+						}
+						if(timeout-System.currentTimeMillis()<0)
+						{
+							System.out.println("timeout");
+							sServerSocket.close();
+							break;
 						}
 						
 					}

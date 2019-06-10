@@ -41,6 +41,7 @@ public class PClient {
 							//cClientSocket.getInputStream().transferTo(sClientSocket.getOutputStream());
 							StreamTools.copyStream(cClientSocket.getInputStream(),sClientSocket.getOutputStream());
 							//System.out.println(cClientSocket.getInputStream().available()+" done cClientSocket to sClientSocket");
+							cClientSocket.close();
 						}
 					}
 					cClientSocket.close();
