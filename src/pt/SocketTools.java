@@ -55,6 +55,6 @@ public class SocketTools {
 		    	read=buffer_size;
 	    }
 	    output.flush();
-	    System.out.println(log_header +" bytes="+ total_sent);
+	    //System.out.println(log_header +" bytes="+ total_sent);
 	}
 }

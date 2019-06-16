@@ -12,7 +12,7 @@ public class SocketBindThread extends Thread {
 	@Override
 	public void run() {
 		String sockets="socket("+socket1.getLocalPort()+":"+socket1.getPort()+") and socket("+socket2.getLocalPort()+":"+socket2.getPort()+")";
-		System.out.println("Binding "+sockets);
+		System.out.println("Threads:"+this.getThreadGroup().activeCount()+"| Binding "+sockets);
 		long bind_timeout=System.currentTimeMillis()+Config.bind_timeout;	
 		try 
 		{
@@ -20,12 +20,12 @@ public class SocketBindThread extends Thread {
 			{
 				if(socket1.getInputStream().available()>0)
 				{
-					SocketTools.copyStream(socket1.getInputStream(),socket2.getOutputStream(),"REQUEST("+socket1.getPort()+")");
+					SocketTools.copyStream(socket1.getInputStream(),socket2.getOutputStream(),"REQUEST  ("+socket1.getPort()+")");
 					bind_timeout=System.currentTimeMillis()+Config.bind_timeout;
 				}
 				if(socket2.getInputStream().available()>0)
 				{
-					SocketTools.copyStream(socket2.getInputStream(),socket1.getOutputStream(),"RESPONSE"+socket2.getPort()+")");
+					SocketTools.copyStream(socket2.getInputStream(),socket1.getOutputStream(),"RESPONSE ("+socket2.getPort()+")");
 					bind_timeout=System.currentTimeMillis()+Config.bind_timeout;
 				}
 				if(bind_timeout-System.currentTimeMillis()<0 && Config.bind_timeout>0)
@@ -38,7 +38,7 @@ public class SocketBindThread extends Thread {
 			{
 				socket2.close();
 				socket1.close();
-				System.out.println("Closed "+sockets);
+				System.out.println("Threads:"+(this.getThreadGroup().activeCount()-1)+"| Closed  "+sockets);
 			} 
 			catch (IOException e1) 
 			{
@@ -51,11 +51,12 @@ public class SocketBindThread extends Thread {
 		{
 			socket2.close();
 			socket1.close();
-			System.out.println("Closed "+sockets);
+			System.out.println("Threads:"+(this.getThreadGroup().activeCount()-1)+"| Closed  "+sockets);
 		} 
 		catch (IOException e1) 
 		{
 			e1.printStackTrace();
 		}
 	}
+	
 }
