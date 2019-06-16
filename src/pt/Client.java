@@ -5,7 +5,7 @@ import java.net.Socket;
 
 public class Client {
 
-	public static void main(String[] args) throws Exception {
+	public static void start() throws Exception {
 		System.out.println("sync conneting...");
 		Socket sync=new Socket(Config.host,Config.sync_port);
 		System.out.println("sync conneted");

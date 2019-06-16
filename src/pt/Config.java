@@ -1,10 +1,21 @@
 package pt;
 
-public class Config {
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.io.Serializable;
+import java.util.Properties;
+
+public class Config implements Serializable{
 
 	
 	// Using
-	static long bind_timeout=10000;
+	static long bind_timeout=-10000;
 	static int 
 	sync_port=4041,
 	port=4040,
@@ -18,4 +29,39 @@ public class Config {
 	
 	//Garbage
 	static int[] ports= {3030,3031,3032,3034};
+	
+	public static void save(String configFile) throws FileNotFoundException, IOException
+	{
+		Properties properties=new Properties();
+		properties.setProperty("config.port", ""+Config.port);
+		properties.setProperty("config.sync_port", ""+Config.sync_port);
+		properties.setProperty("config.access_port", ""+Config.access_port);
+		properties.setProperty("config.client_port", ""+Config.client_port);
+		
+		properties.setProperty("config.host", Config.host);
+		properties.setProperty("config.access_host", Config.access_host);
+		properties.setProperty("config.client_host", Config.client_host);
+		
+		properties.setProperty("config.bind_timeout", ""+Config.bind_timeout);
+		properties.store(new FileOutputStream(configFile),"Properties");
+		
+		
+	}
+	public static void load(String configFile) throws IOException
+	{
+		Properties properties=new Properties();
+		properties.load(new FileInputStream(configFile));
+		Config.port=Integer.parseInt(properties.getProperty("config.port", ""+Config.port));
+		Config.sync_port=Integer.parseInt(properties.getProperty("config.sync_port", ""+Config.sync_port));
+		Config.access_port=Integer.parseInt(properties.getProperty("config.access_port", ""+Config.access_port));
+		Config.client_port=Integer.parseInt(properties.getProperty("config.client_port", ""+Config.client_port));
+		
+		Config.host=properties.getProperty("config.host", Config.host);
+		Config.access_host=properties.getProperty("config.access_host", Config.access_host);
+		Config.client_host=properties.getProperty("config.client_host", Config.client_host);
+		
+		Config.bind_timeout=Long.parseLong(properties.getProperty("config.bind_timeout", ""+Config.bind_timeout));
+		
+		properties.store(new FileOutputStream(configFile),"Properties");
+	}
 }

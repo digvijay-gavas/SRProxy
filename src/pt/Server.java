@@ -6,8 +6,7 @@ import java.net.Socket;
 
 public class Server {
 
-	public static void main(String[] args) throws Exception{
-		// TODO Auto-generated method stub
+	public static void start() throws Exception{
 		ServerSocket 
 		access_serverSocket=null,
 		serverSocket=null,
@@ -41,7 +40,6 @@ public class Server {
 			sync_serverSocket.close();
 			e.printStackTrace();
 		}
-		
 	}
 
 }
