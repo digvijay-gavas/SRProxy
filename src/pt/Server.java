@@ -6,28 +6,40 @@ import java.net.Socket;
 
 public class Server {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception{
 		// TODO Auto-generated method stub
-		System.out.println("sync conneting...");
-		Socket sync=new ServerSocket(Config.sync_port).accept();
-		System.out.println("sync connected");
+		ServerSocket 
+		access_serverSocket=null,
+		serverSocket=null,
+		sync_serverSocket=null;
 		
+		Socket sync=null;
 		
-		ServerSocket access_serverSocket=new ServerSocket(Config.access_port);
-
-		ServerSocket serverSocket=new ServerSocket(Config.port);
-
-		while(true)
-		{
-			System.out.println("access waiting...");
-			Socket access_socket=access_serverSocket.accept();
-			System.out.println("waiting...");
-			sync.getOutputStream().write(10);
-			sync.getOutputStream().flush();
-			Socket socket=serverSocket.accept();
-			System.out.println("connected");
+		try {
+			System.out.println("sync conneting...");
+			sync_serverSocket=new ServerSocket(Config.sync_port);
+			sync=sync_serverSocket.accept();
+			System.out.println("sync connected");
 			
-			new SocketBindThread(access_socket, socket).start();
+			access_serverSocket=new ServerSocket(Config.access_port);
+			serverSocket=new ServerSocket(Config.port);
+			
+			while(true)
+			{
+				Socket access_socket=access_serverSocket.accept();
+				sync.getOutputStream().write(10);
+				sync.getOutputStream().flush();
+				Socket socket=serverSocket.accept();			
+				new SocketBindThread(access_socket, socket).start();
+			}
+		}
+		catch(IOException e)
+		{
+			serverSocket.close();
+			access_serverSocket.close();
+			sync.close();
+			sync_serverSocket.close();
+			e.printStackTrace();
 		}
 		
 	}

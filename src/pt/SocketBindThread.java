@@ -3,8 +3,6 @@ package pt;
 import java.io.IOException;
 import java.net.Socket;
 
-import p.StreamTools;
-
 public class SocketBindThread extends Thread {
 	Socket socket1,socket2;
 	public SocketBindThread(Socket socket1,Socket socket2) {
