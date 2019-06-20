@@ -28,7 +28,7 @@ public class Main {
 		}
 		if(configFile!=null)
 		Config.load(configFile);
-		
+		ColorLogger.enableColor();
 		if(is_server==true)
 		{
 			System.out.println("starting server...");

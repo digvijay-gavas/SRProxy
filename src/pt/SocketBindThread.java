@@ -12,7 +12,7 @@ public class SocketBindThread extends Thread {
 	@Override
 	public void run() {
 		String sockets="socket("+socket1.getLocalPort()+":"+socket1.getPort()+") and socket("+socket2.getLocalPort()+":"+socket2.getPort()+")";
-		System.out.println("Threads:"+(this.getThreadGroup().activeCount()-1)+"| Binding "+sockets);
+		ColorLogger.log("<info>Threads:"+(this.getThreadGroup().activeCount()-1)+"</info>| <success>Binding "+sockets+"</success>",true);
 		long bind_timeout=System.currentTimeMillis()+Config.bind_timeout;	
 		try 
 		{
@@ -38,7 +38,7 @@ public class SocketBindThread extends Thread {
 			{
 				socket2.close();
 				socket1.close();
-				System.out.println("Threads:"+(this.getThreadGroup().activeCount()-2)+"| Closed  "+sockets);
+				ColorLogger.log("<info>Threads:"+(this.getThreadGroup().activeCount()-2)+"</info>| <warn>Closed  "+sockets+"</warn>",true);
 			} 
 			catch (IOException e1) 
 			{
@@ -51,7 +51,7 @@ public class SocketBindThread extends Thread {
 		{
 			socket2.close();
 			socket1.close();
-			System.out.println("Threads:"+(this.getThreadGroup().activeCount()-2)+"| Closed  "+sockets);
+			ColorLogger.log("<info>Threads:"+(this.getThreadGroup().activeCount()-2)+"</info>| <warn>Closed  "+sockets+"</warn>",true);
 		} 
 		catch (IOException e1) 
 		{

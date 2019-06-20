@@ -3,6 +3,7 @@ package pt;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class Server {
 
@@ -14,22 +15,22 @@ public class Server {
 		
 		Socket sync=null;
 		
+		byte notifyByte=10;
+		
 		try {
-			System.out.println("sync conneting...");
-			sync_serverSocket=new ServerSocket(Config.sync_port);
-			sync=sync_serverSocket.accept();
-			System.out.println("sync connected");
 			
+			sync_serverSocket=new ServerSocket(Config.sync_port);
+			sync=SocketTools.connectAndNotifyToClient(sync_serverSocket, sync, notifyByte);
 			access_serverSocket=new ServerSocket(Config.access_port);
 			serverSocket=new ServerSocket(Config.port);
 			
 			while(true)
 			{
 				Socket access_socket=access_serverSocket.accept();
-				sync.getOutputStream().write(10);
-				sync.getOutputStream().flush();
+				sync=SocketTools.connectAndNotifyToClient(sync_serverSocket, sync, notifyByte);
 				Socket socket=serverSocket.accept();			
 				new SocketBindThread(access_socket, socket).start();
+				
 			}
 		}
 		catch(IOException e)

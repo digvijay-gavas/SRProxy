@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class SocketTools {
 
@@ -19,9 +20,9 @@ public class SocketTools {
 				try
 				{
 					serverSocket=new ServerSocket(Config.ports[i]);
-					System.out.println("Got "+Config.ports[i]);
+					ColorLogger.log("Got "+Config.ports[i]);
 					socket=serverSocket.accept();
-					System.out.println("Got C"+Config.ports[i]);
+					ColorLogger.log("Got C"+Config.ports[i]);
 					break;
 					
 				}
@@ -31,7 +32,7 @@ public class SocketTools {
 			}
 		}
 		
-		System.out.println("Client Connected"+socket.getPort()+"("+socket.getLocalPort()+")");
+		ColorLogger.log("Client Connected"+socket.getPort()+"("+socket.getLocalPort()+")");
 		return socket;
 	}
 	
@@ -55,6 +56,30 @@ public class SocketTools {
 		    	read=buffer_size;
 	    }
 	    output.flush();
-	    //System.out.println(log_header +" bytes="+ total_sent);
+	    //ColorLogger.log(log_header +" bytes="+ total_sent);
+	}
+	
+	public static Socket connectAndNotifyToClient(ServerSocket sync_serverSocket,Socket socket,byte notifyByte) throws IOException
+	{
+		if(socket==null || socket.isClosed() || !socket.isConnected())
+		{
+			ColorLogger.log("<warn>Waiting for sync...</warn>");
+			socket=sync_serverSocket.accept();
+			ColorLogger.log("<success>sync connected</success>");
+		}
+		while(true)
+		{
+			try {
+				socket.getOutputStream().write(notifyByte);
+				socket.getOutputStream().flush();
+				break;
+			}
+			catch (SocketException e) {
+				ColorLogger.log("<warn>Waiting for sync...</warn>");
+				socket=sync_serverSocket.accept();
+				ColorLogger.log("<success>sync connected</success>");
+			}
+		}
+		return socket;
 	}
 }
