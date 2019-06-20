@@ -3,7 +3,8 @@ http simple proxy for system where outbound traffic is blocked by firewall of pr
 This proxy have two part proxy_server_part and proxy_client_part
 
 
-<pre>
+
+<pre style="line-height: 0.8">
                                       Network 1                        Network 2                                            <br>
                                             \                           /                                                   <br>
                                              \                         /                                                    <br>
