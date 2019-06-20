@@ -2,6 +2,10 @@ package pt;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+
 
 public class ColorLogger {
 	public static final String ANSI_RESET = "\u001B[0m";
@@ -15,17 +19,26 @@ public class ColorLogger {
 	public static final String ANSI_WHITE = "\u001B[37m";
 	public static final String ANSI_CLEAR_SCREEN = "\u001B[2J";
 	
+	private static boolean enableANSIColor=true;
+	
 	public static void log(String log)
 	{
-		StringWriter logw=new StringWriter();
-		log=log.replaceAll("<error>", ANSI_RED);
-		log=log.replaceAll("</error>", ANSI_RESET);
-		log=log.replaceAll("<warn>", ANSI_YELLOW);
-		log=log.replaceAll("</warn>", ANSI_RESET);
-		log=log.replaceAll("<success>", ANSI_GREEN);
-		log=log.replaceAll("</success>", ANSI_RESET);
-		log=log.replaceAll("<info>", ANSI_CYAN);
-		log=log.replaceAll("</info>", ANSI_RESET);
+		if (enableANSIColor)
+		{
+			log=log.replaceAll("<error>", ANSI_RED);
+			log=log.replaceAll("<warn>", ANSI_YELLOW);
+			log=log.replaceAll("<success>", ANSI_GREEN);
+			log=log.replaceAll("<info>", ANSI_CYAN);
+			Pattern p =Pattern.compile("<[ ]*/[ ]*[a-zA-Z0-9]*[ ]*>") ;
+			Matcher m = p.matcher(log); 
+			log = m.replaceAll(ANSI_RESET);
+		}
+		else
+		{
+			Pattern p =Pattern.compile("<[ ]*[/a-zA-Z0-9]*[ ]*>") ;
+			Matcher m = p.matcher(log); 
+			log = m.replaceAll("");
+		}
 		System.out.println(log);
 	}
 	
@@ -45,8 +58,10 @@ public class ColorLogger {
                  Runtime.getRuntime().exec("clear");
          } catch (IOException | InterruptedException ex) {ex.printStackTrace();}
 	}
-	public static void enableColor()
+	public static void enableANSIColor(boolean enableANSIColor1)
 	{
-		 clear();
+		enableANSIColor=enableANSIColor1;
+		if(enableANSIColor)
+			clear();
 	}
 }

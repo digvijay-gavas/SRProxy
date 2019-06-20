@@ -25,14 +25,22 @@ public class Config implements Serializable{
 	static String
 	host="localhost",
 	access_host="localhost",
-	client_host="localhost";
+	client_host="localhost",
+	proxy_part_type="server";
+	
+	static boolean enableANSIColor=true;
+	
 	
 	//Garbage
 	static int[] ports= {3030,3031,3032,3034};
 	
+	//Methods
 	public static void save(String configFile) throws FileNotFoundException, IOException
 	{
 		Properties properties=new Properties();
+		
+		properties.setProperty("config.proxy_part_type", Config.proxy_part_type);
+		
 		properties.setProperty("config.port", ""+Config.port);
 		properties.setProperty("config.sync_port", ""+Config.sync_port);
 		properties.setProperty("config.access_port", ""+Config.access_port);
@@ -43,6 +51,8 @@ public class Config implements Serializable{
 		properties.setProperty("config.client_host", Config.client_host);
 		
 		properties.setProperty("config.bind_timeout", ""+Config.bind_timeout);
+		properties.setProperty("config.logging.enableANSIColor",""+Config.enableANSIColor);
+		
 		properties.store(new FileOutputStream(configFile),"Properties");
 		
 		
@@ -51,6 +61,8 @@ public class Config implements Serializable{
 	{
 		Properties properties=new Properties();
 		properties.load(new FileInputStream(configFile));
+		Config.proxy_part_type=properties.getProperty("config.proxy_part_type", Config.proxy_part_type);
+		
 		Config.port=Integer.parseInt(properties.getProperty("config.port", ""+Config.port));
 		Config.sync_port=Integer.parseInt(properties.getProperty("config.sync_port", ""+Config.sync_port));
 		Config.access_port=Integer.parseInt(properties.getProperty("config.access_port", ""+Config.access_port));
@@ -61,6 +73,8 @@ public class Config implements Serializable{
 		Config.client_host=properties.getProperty("config.client_host", Config.client_host);
 		
 		Config.bind_timeout=Long.parseLong(properties.getProperty("config.bind_timeout", ""+Config.bind_timeout));
+		
+		Config.enableANSIColor=Boolean.parseBoolean(properties.getProperty("config.logging.enableANSIColor", ""+Config.enableANSIColor));
 		
 		properties.store(new FileOutputStream(configFile),"Properties");
 	}

@@ -1,43 +1,70 @@
 package pt;
 
+import java.io.File;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
+		ColorLogger.enableANSIColor(Config.enableANSIColor);
+		// Loading configFile if given
 		boolean is_server=true;
-		String configFile=null;
+		for (int i = 0; i < args.length; i++) {
+			if(args[i].equalsIgnoreCase("-configFile"))
+			{
+				try {
+					Config.load(args[i+1]);
+				}catch (Exception e) {
+					ColorLogger.log("<error>invalid -configFile "+e.getLocalizedMessage()+"</error>");
+					System.exit(1);
+				}
+				break;
+			}
+		}
+		
+		// overriding configFile option if given as args
 		for (int i = 0; i < args.length; i++) {
 			if(args[i].charAt(0)=='-')
 			{
 				switch (args[i]) {
 				case "-s":
-					is_server=true;
+					Config.proxy_part_type="server";
 					break;
 				case "-c":
-					is_server=false;
+					Config.proxy_part_type="client";
 					break;
 				case "-configFile":
-					configFile=args[i+1];
 					i++;
 					break;
 				default:
+					ColorLogger.log("<error>invalid option "+args[i]+"</error>");
+					System.exit(1);
 					break;
 				}
 			}
+			else
+			{
+				ColorLogger.log("<error>invalid value "+args[i]+"</error>");
+				System.exit(1);
+			}
 		}
-		if(configFile!=null)
-		Config.load(configFile);
-		ColorLogger.enableColor();
-		if(is_server==true)
+		
+		ColorLogger.enableANSIColor(Config.enableANSIColor);
+		
+		if(Config.proxy_part_type.equalsIgnoreCase("server"))
 		{
 			System.out.println("starting server...");
 			Server.start();
 		}
-		else
+		else if(Config.proxy_part_type.equalsIgnoreCase("client"))
 		{
 			System.out.println("starting client...");
 			Client.start();
+		}
+		else
+		{
+			ColorLogger.log("<error>invalid value Config.proxy_part_type="+Config.proxy_part_type+"</error>");
+			System.exit(1);
 		}
 	}
 
