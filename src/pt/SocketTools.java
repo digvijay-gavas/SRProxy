@@ -49,7 +49,7 @@ public class SocketTools {
 	    {
 	    	input.read(buffer, 0, read);
 	        output.write(buffer, 0, read);
-	        //System.err.write(buffer, 0, read);
+	        System.err.write(buffer, 0, read);
 	        total_sent+=read;	        
 	        read=input.available();
 	        if(read>buffer_size)

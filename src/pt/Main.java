@@ -20,6 +20,18 @@ public class Main {
 				}
 				break;
 			}
+			else if(args[i].equalsIgnoreCase("-configSave"))
+			{
+				try {
+					Config.save(args[i+1]);
+					ColorLogger.log("<success>saved config file to "+args[i+1]+" </success>");
+					System.exit(0);
+				}catch (Exception e) {
+					ColorLogger.log("<error>invalid -configSave "+e.getLocalizedMessage()+"</error>");
+					System.exit(1);
+				}
+				break;
+			}
 		}
 		
 		// overriding configFile option if given as args
@@ -36,6 +48,9 @@ public class Main {
 				case "-configFile":
 					i++;
 					break;
+				/*case "-configSave":
+					i++;
+					break;*/
 				default:
 					ColorLogger.log("<error>invalid option "+args[i]+"</error>");
 					System.exit(1);
