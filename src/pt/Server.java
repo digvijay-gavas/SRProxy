@@ -10,24 +10,18 @@ public class Server {
 	public static void start() throws Exception{
 		ServerSocket 
 		access_serverSocket=null,
-		serverSocket=null,
-		sync_serverSocket=null;
-		
-		Socket sync=null;
-		
-		byte notifyByte=10;
+		serverSocket=null;
+		ColorLogger.log("<info>sarting</info>=");
 		
 		try {
-			
-			sync_serverSocket=new ServerSocket(Config.sync_port);
-			sync=SocketTools.connectAndNotifyToClient(sync_serverSocket, sync, notifyByte);
+			SyncSocket syncSocket=new SyncSocket(Config.sync_port,(byte)10);
 			access_serverSocket=new ServerSocket(Config.access_port);
 			serverSocket=new ServerSocket(Config.port);
 			
 			while(true)
 			{
 				Socket access_socket=access_serverSocket.accept();
-				sync=SocketTools.connectAndNotifyToClient(sync_serverSocket, sync, notifyByte);
+				syncSocket.requestConnection();
 				Socket socket=serverSocket.accept();			
 				new SocketBindThread(access_socket, socket).start();
 				
@@ -37,8 +31,6 @@ public class Server {
 		{
 			serverSocket.close();
 			access_serverSocket.close();
-			sync.close();
-			sync_serverSocket.close();
 			e.printStackTrace();
 		}
 	}

@@ -5,6 +5,7 @@ import java.net.Socket;
 
 public class SocketBindThread extends Thread {
 	Socket socket1,socket2;
+	int loop_rest=100;
 	public SocketBindThread(Socket socket1,Socket socket2) {
 		this.socket1=socket1;
 		this.socket2=socket2;
@@ -30,6 +31,7 @@ public class SocketBindThread extends Thread {
 				}
 				if(bind_timeout-System.currentTimeMillis()<0 && Config.bind_timeout>0)
 					break;
+				Thread.sleep(loop_rest);
 			}
 		}
 		catch(Exception e)

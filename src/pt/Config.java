@@ -20,13 +20,15 @@ public class Config implements Serializable{
 	sync_port=4041,
 	port=4040,
 	access_port=7070,
-	client_port=8080;
+	client_port=8081,
+	retry_interval=100;
 	
 	static String
 	host="localhost",
 	access_host="localhost",
 	client_host="localhost",
 	proxy_part_type="server";
+	 
 	
 	static boolean enableANSIColor=true;
 	

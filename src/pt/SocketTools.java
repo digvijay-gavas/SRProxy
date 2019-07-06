@@ -3,6 +3,7 @@ package pt;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.ConnectException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -57,29 +58,6 @@ public class SocketTools {
 	    }
 	    output.flush();
 	    //ColorLogger.log(log_header +" bytes="+ total_sent);
-	}
+	}	
 	
-	public static Socket connectAndNotifyToClient(ServerSocket sync_serverSocket,Socket socket,byte notifyByte) throws IOException
-	{
-		if(socket==null || socket.isClosed() || !socket.isConnected())
-		{
-			ColorLogger.log("<warn>Waiting for sync...</warn>");
-			socket=sync_serverSocket.accept();
-			ColorLogger.log("<success>sync connected</success>");
-		}
-		while(true)
-		{
-			try {
-				socket.getOutputStream().write(notifyByte);
-				socket.getOutputStream().flush();
-				break;
-			}
-			catch (SocketException e) {
-				ColorLogger.log("<warn>Waiting for sync...</warn>");
-				socket=sync_serverSocket.accept();
-				ColorLogger.log("<success>sync connected</success>");
-			}
-		}
-		return socket;
-	}
 }
