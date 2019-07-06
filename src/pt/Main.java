@@ -48,9 +48,6 @@ public class Main {
 				case "-configFile":
 					i++;
 					break;
-				/*case "-configSave":
-					i++;
-					break;*/
 				default:
 					ColorLogger.log("<error>invalid option "+args[i]+"</error>");
 					System.exit(1);
