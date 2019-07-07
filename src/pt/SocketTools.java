@@ -3,10 +3,8 @@ package pt;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.ConnectException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 
 public class SocketTools {
 
@@ -21,9 +19,9 @@ public class SocketTools {
 				try
 				{
 					serverSocket=new ServerSocket(Config.ports[i]);
-					ColorLogger.log("Got "+Config.ports[i]);
+					ColorLogger.logln("Got "+Config.ports[i]);
 					socket=serverSocket.accept();
-					ColorLogger.log("Got C"+Config.ports[i]);
+					ColorLogger.logln("Got C"+Config.ports[i]);
 					break;
 					
 				}
@@ -33,14 +31,14 @@ public class SocketTools {
 			}
 		}
 		
-		ColorLogger.log("Client Connected"+socket.getPort()+"("+socket.getLocalPort()+")");
+		ColorLogger.logln("Client Connected"+socket.getPort()+"("+socket.getLocalPort()+")");
 		return socket;
 	}
 	
-	public static void copyStream(InputStream input, OutputStream output,String log_header) throws IOException
+	public static void copyStream(InputStream input, OutputStream output,boolean printSocketComunication) throws IOException
 	{
 		int buffer_size=32768;
-		long total_sent=0;
+		//long total_sent=0;
 	    byte[] buffer = new byte[buffer_size];
 	    int read=input.available();
 	    if(read>buffer_size)
@@ -50,8 +48,10 @@ public class SocketTools {
 	    {
 	    	input.read(buffer, 0, read);
 	        output.write(buffer, 0, read);
-	        System.err.write(buffer, 0, read);
-	        total_sent+=read;	        
+	        if(printSocketComunication)
+	        	System.out.write(buffer, 0, read);
+	        	//ColorLogger.write(buffer, 0, read);
+	        //total_sent+=read;	        
 	        read=input.available();
 	        if(read>buffer_size)
 		    	read=buffer_size;

@@ -1,23 +1,23 @@
 package pt;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.Properties;
 
 public class Config implements Serializable{
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	// Using
 	static long bind_timeout=-10000;
 	static int 
-	sync_port=4041,
+	sync_port=4042,
 	port=4040,
 	access_port=7070,
 	client_port=8081,
@@ -27,10 +27,11 @@ public class Config implements Serializable{
 	host="localhost",
 	access_host="localhost",
 	client_host="localhost",
-	proxy_part_type="server";
+	proxy_part_type="client";
 	 
 	
 	static boolean enableANSIColor=true;
+	static boolean printSocketComunication=true;
 	
 	
 	//Garbage
@@ -54,6 +55,7 @@ public class Config implements Serializable{
 		
 		properties.setProperty("config.bind_timeout", ""+Config.bind_timeout);
 		properties.setProperty("config.logging.enableANSIColor",""+Config.enableANSIColor);
+		properties.setProperty("config.logging.printSocketComunication",""+Config.printSocketComunication);
 		
 		properties.store(new FileOutputStream(configFile),"Properties");
 		
@@ -77,6 +79,7 @@ public class Config implements Serializable{
 		Config.bind_timeout=Long.parseLong(properties.getProperty("config.bind_timeout", ""+Config.bind_timeout));
 		
 		Config.enableANSIColor=Boolean.parseBoolean(properties.getProperty("config.logging.enableANSIColor", ""+Config.enableANSIColor));
+		Config.printSocketComunication=Boolean.parseBoolean(properties.getProperty("config.logging.printSocketComunication", ""+Config.printSocketComunication));
 		
 		properties.store(new FileOutputStream(configFile),"Properties");
 	}

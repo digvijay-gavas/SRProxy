@@ -1,6 +1,7 @@
 package pt;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.Socket;
 
 public class Client {
@@ -14,8 +15,19 @@ public class Client {
 				try {
 						syncSocket.serveConnection();
 						Socket socket=new Socket(Config.host, Config.port);
-						Socket client_socket=new Socket(Config.client_host, Config.client_port);
-						new SocketBindThread(socket, client_socket).start();
+						boolean isInWaitState = false;
+						while(true)
+							try {
+								Socket client_socket=new Socket(Config.client_host, Config.client_port);
+								new SocketBindThread(socket, client_socket,Config.printSocketComunication).start();
+								break;
+							}
+							catch (ConnectException e) {
+								if (!isInWaitState)
+									ColorLogger.logln("<warn>Waiting for "+Config.client_host+":"+Config.client_port+"</warn>");
+								Thread.sleep(Config.retry_interval);
+								isInWaitState=true;
+							}
 				}
 				catch (IOException e) {
 				}

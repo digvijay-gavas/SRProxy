@@ -1,7 +1,6 @@
 package pt;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,9 +16,16 @@ public class ColorLogger {
 	public static final String ANSI_PURPLE = "\u001B[35m";
 	public static final String ANSI_CYAN = "\u001B[36m";
 	public static final String ANSI_WHITE = "\u001B[37m";
+	public static final String ANSI_GRAY = "\u001B[90m";
 	public static final String ANSI_CLEAR_SCREEN = "\u001B[2J";
 	
 	private static boolean enableANSIColor=true;
+	
+	public static void logln(String log)
+	{
+		log(log);
+		System.out.println();
+	}
 	
 	public static void log(String log)
 	{
@@ -39,14 +45,14 @@ public class ColorLogger {
 			Matcher m = p.matcher(log); 
 			log = m.replaceAll("");
 		}
-		System.out.println(log);
+		System.out.print(log);
 	}
 	
-	public static void log(String log,boolean doClear)
+	public static void logln(String log,boolean doClear)
 	{
 		//if(doClear)
 			//System.out.print(ANSI_CLEAR_SCREEN);
-		log(log);
+		logln(log);
 	}
 	
 	public static void clear()
@@ -63,5 +69,11 @@ public class ColorLogger {
 		enableANSIColor=enableANSIColor1;
 		if(enableANSIColor)
 			clear();
+	}
+
+	public static void write(byte[] buffer, int start, int len) {
+		//System.out.print(ANSI_GRAY);
+		System.out.write(buffer, start, len);
+		//System.out.print(ANSI_RESET);
 	}
 }
