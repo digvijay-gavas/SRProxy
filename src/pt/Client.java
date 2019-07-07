@@ -19,7 +19,7 @@ public class Client {
 						while(true)
 							try {
 								Socket client_socket=new Socket(Config.client_host, Config.client_port);
-								new SocketBindThread(socket, client_socket,Config.printSocketComunication).start();
+								SocketBindThread.bind(socket, client_socket,Config.printSocketComunication);
 								break;
 							}
 							catch (ConnectException e) {

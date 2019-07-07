@@ -27,7 +27,7 @@ public class Config implements Serializable{
 	host="localhost",
 	access_host="localhost",
 	client_host="localhost",
-	proxy_part_type="client";
+	proxy_part_type="server";
 	 
 	
 	static boolean enableANSIColor=true;

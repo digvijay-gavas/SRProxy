@@ -17,11 +17,11 @@ public class Server {
 			
 			while(true)
 			{
-				ColorLogger.logln("<warn>Waiting on "+Config.access_port+"</warn>");
+				ColorLogger.logln("<warn>Ready on "+Config.access_port+"</warn>");
 				Socket access_socket=access_serverSocket.accept();
 				syncSocket.requestConnection();
 				Socket socket=serverSocket.accept();			
-				new SocketBindThread(access_socket, socket,Config.printSocketComunication).start();
+				SocketBindThread.bind(access_socket, socket,Config.printSocketComunication);
 				
 			}
 		}
