@@ -38,6 +38,28 @@ This proxy have two part proxy_server_part and proxy_client_part
                                                |                    |
 </pre>
 
+# How to use?
 
+### to start server-side of proxy
+`java -jar SRProxy.jar -s -configFile /path/to/config/file`
 
+### to start client-side of proxy
+`java -jar SRProxy.jar -c -configFile /path/to/config/file`
 
+### configFile sample
+```
+#Properties
+#Sun Jul 07 18:28:44 CEST 2019
+config.logging.enableANSIColor=true
+config.proxy_part_type=server
+config.sync_port=4041
+config.logging.printSocketComunication=false
+config.client_port=22
+config.bind_timeout=-10000
+config.client_host=192.168.110.132
+config.host=localhost
+config.port=4040
+config.access_port=7071
+config.access_host=localhost
+
+```
