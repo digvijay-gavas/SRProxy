@@ -1,8 +1,10 @@
-package pt;
+package light;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Server2 {
 
@@ -17,20 +19,21 @@ public class Server2 {
 			while(true)
 			{
 				try {
-					ColorLogger.logln("<warn>Ready on "+Config.access_port+"</warn>");
+					Logger.getGlobal().log(Level.INFO,"Ready on "+Config.access_port);
 					Socket access_socket=access_serverSocket.accept();
 					serverSocket=new ServerSocket(Config.port);
 					Socket socket=serverSocket.accept();
 					serverSocket.close();
-					SocketBindThread.bind(access_socket, socket,Config.printSocketComunication);
+					SocketBindThread.bind(access_socket, socket);
 				}catch (Exception e) {
-					
+					Logger.getGlobal().log(Level.WARNING,"", e);
 					serverSocket.close();
 				}
 			}
 		}
 		catch(IOException e)
 		{
+			Logger.getGlobal().log(Level.WARNING,"", e);
 			serverSocket.close();
 			access_serverSocket.close();
 			e.printStackTrace();
