@@ -1,3 +1,7 @@
+# offload yourApp workload to powerfull non-public local m/c
+
+![yourApp on web](documents/images/offload_yourApp.png "yourApp")
+
 # SRProxy
 http simple proxy for system where outbound traffic is blocked by firewall of proxy computer, but inbound traffic is open. 
 This proxy have two part proxy_server_part and proxy_client_part
