@@ -66,12 +66,12 @@ public class Main {
 		if(Config.proxy_part_type.equalsIgnoreCase("server"))
 		{
 			System.out.println("starting server...");
-			Server.start();
+			Server2.start();
 		}
 		else if(Config.proxy_part_type.equalsIgnoreCase("client"))
 		{
 			System.out.println("starting client...");
-			Client.start();
+			Client2.start();
 		}
 		else
 		{

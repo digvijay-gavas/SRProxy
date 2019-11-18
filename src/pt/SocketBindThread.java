@@ -1,6 +1,7 @@
 package pt;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.Socket;
 
 public class SocketBindThread extends Thread {
@@ -58,6 +59,30 @@ public class SocketBindThread extends Thread {
 				
 			}
 		}).start();
+	}
+	
+	public static void timeoutBind(Socket socket1,ServerSocket serverSocket,boolean printSocketComunication, long timeout) {
+		new Thread(sendGroup, new Runnable() {
+			
+			@Override
+			public void run() {
+				Socket socket2=null;
+				try {
+					socket2=serverSocket.accept();
+					SocketBindThread.bind(socket1, socket2,printSocketComunication);
+				} catch (IOException e) {
+					try {
+						socket1.close();
+						socket2.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+
+				}
+
+			}
+		}).start();
+		
 	}
 	
 	
