@@ -30,15 +30,16 @@ public class Client2 {
 								Thread.sleep(Config.retry_interval);
 								isInWaitState=true;
 							}
-							Thread.sleep(Config.retry_interval);  
+							//Thread.sleep(Config.retry_interval);  
 						}
 				}
 				catch (IOException e) {
 					if (!isInWaitState)
 						Logger.getGlobal().log(Level.WARNING," waiting for "+Config.host+":"+Config.port+" retrying interval "+Config.retry_interval +" millis");
+					Thread.sleep(Config.retry_interval);
 					isInWaitState=true;
 				}
-				Thread.sleep(Config.retry_interval);
+				//Thread.sleep(Config.retry_interval);
 			}
 		}
 		catch(Exception e)
